@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrazzo Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            flex: 1;
+            text-align: right;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .input-group input {
+            padding: 10px;
+            width: 150px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        #totalCost {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Terrazzo Cost Calculator</h1>
+
+        <div class="input-group">
+            <label for="areaFeet">Square Feet:</label>
+            <input type="number" id="areaFeet" oninput="handleInput(this)" placeholder="Square Feet">
+        </div>
+
+        <div class="input-group">
+            <label for="areaMeters">Square Meters:</label>
+            <input type="number" id="areaMeters" oninput="handleInput(this)" placeholder="Square Meters">
+        </div>
+
+        <div id="totalCost">0 UGX</div>
+
+        <button onclick="calculateCost()">Calculate Total Cost</button>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Terrazzo Experts. All Rights Reserved.</p>
+    </div>
+
+    <script>
+        function handleInput(source) {
+            const feetInputElem = document.getElementById("areaFeet");
+            const metersInputElem = document.getElementById("areaMeters");
+            const pricePerSquareMeter = 60000; // 60,000 UGX per square meter
+
+            // Convert based on the source input
+            if (source.id === "areaFeet") {
+                const feetValue = parseFloat(source.value);
+                if (!isNaN(feetValue)) {
+                    const metersValue = feetValue * 0.092903;
+                    metersInputElem.value = metersValue.toFixed(6);
+                } else if (source.value.trim() === "") {
+                    // Clear meters if feet is cleared
+                    metersInputElem.value = "";
+                } else {
+                    // Invalid input, reset both
+                    feetInputElem.value = "";
+                    metersInputElem.value = "";
+                }
+            } else if (source.id === "areaMeters") {
+                const metersValue = parseFloat(source.value);
+                if (!isNaN(metersValue)) {
+                    const feetValue = metersValue * 10.764;
+                    feetInputElem.value = feetValue.toFixed(2);
+                } else if (source.value.trim() === "") {
+                    // Clear feet if meters is cleared
+                    feetInputElem.value = "";
+                } else {
+                    // Invalid input, reset both
+                    feetInputElem.value = "";
+                    metersInputElem.value = "";
+                }
+            }
+
+            // Calculate the total cost
+            calculateCost();
+        }
+
+        function calculateCost() {
+            const metersInputElem = document.getElementById("areaMeters");
+            const totalCostElem = document.getElementById("totalCost");
+            const pricePerSquareMeter = 60000;
+            const area = parseFloat(metersInputElem.value);
+
+            if (!isNaN(area) && area > 0) {
+                const totalCost = area * pricePerSquareMeter;
+                totalCostElem.innerText = `${totalCost.toLocaleString()} UGX`;
+            } else {
+                totalCostElem.innerText = "0 UGX";
+            }
+        }
+    </script>
+
+</body>
+</html>
